@@ -1,0 +1,6 @@
+framework module Pods_PromisesKitAppTests {
+  umbrella header "Pods-PromisesKitAppTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
