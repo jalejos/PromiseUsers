@@ -11,12 +11,12 @@ import PromiseKit
 
 struct UserRepository {
     static func getUsers() -> Promise <[[String:Any]]> {
-        return Promise { fulfill, reject in
+        return Promise { fulfill, _ in
             Alamofire.request(UserRouter.getUsers()).responseJSON{ (response) in
                 if let json = response.result.value as? [[String:Any]] {
                     fulfill(json)
-                } else if let responseError = response.error {
-                    reject(responseError)
+                } else {
+                    fulfill([])
                 }
             }
         }
@@ -29,6 +29,8 @@ struct UserRepository {
                     fulfill(json)
                 } else if let responseError = response.error {
                     reject(responseError)
+                } else {
+                    fulfill([])
                 }
             }
         }

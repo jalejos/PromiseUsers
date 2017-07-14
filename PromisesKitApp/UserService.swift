@@ -36,9 +36,4 @@ struct UserService {
             })
     }
     
-    static func promiseError() -> Promise<[User]> {
-        return Promise { _, reject in
-            reject(self.noContentError)
-        }
-    }
 }

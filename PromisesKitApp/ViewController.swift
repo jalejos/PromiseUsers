@@ -18,26 +18,21 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        UserService.getUsers().then { users in
-            self.assign(users: users)
-        }.recover { _ in
-            self.recover()
+        UserService.getUsers().then { users -> Bool in
+            self.users = users
+            return self.users.count > 0
+        }.then { valid -> Promise<[User]> in
+            if(!valid){
+                return UserService.getUsersSecure()
+            }
+            return Promise.init(value: self.users)
+        }.then { users -> Void in
+            self.users = users
+            self.tableView.reloadData()
         }.catch { error in
             print(error)
         }
-    }
-    
-    func assign(users: [User]) {
-        self.users = users
-        self.tableView.reloadData()
-    }
-    
-    func recover() {
-        UserService.getUsersSecure().then { users in
-            self.assign(users: users)
-        }.catch { error in
-            print(error)
-        }
+        
     }
 }
 
